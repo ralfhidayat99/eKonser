@@ -1,6 +1,6 @@
 @extends('layouts.welcome')
 
-@section('title', 'Concert Details')
+@section('title', 'Detail Konser')
 
 @section('content')
 <div class="container mt-5">
@@ -21,12 +21,9 @@
                     <div>
                         <h2 class="card-title fw-bold mb-3">{{ $concert->title }}</h2>
                         <ul class="list-unstyled text-muted mb-4" style="font-size: 1.1rem;">
-                            <li><strong>Artist:</strong> {{ $concert->artist }}</li>
-                            <li><strong>Date:</strong> {{ \Carbon\Carbon::parse($concert->date)->format('F d, Y') }}</li>
-                            <li><strong>Location:</strong> {{ $concert->location }}</li>
-                            <li><strong>Quota:</strong> {{ $concert->quota }}</li>
-                            <li><strong>Available Tickets:</strong> {{ $concert->available_tickets }}</li>
-                            <li><strong>Price:</strong> Rp {{ number_format($concert->price, 0, ',', '.') }}</li>
+                            <li><strong>Artis:</strong> {{ $concert->artist }}</li>
+                            <li><strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($concert->date)->format('F d, Y') }}</li>
+                            <li><strong>Lokasi:</strong> {{ $concert->location }}</li>
                         </ul>
                     </div>
                     <div>
@@ -35,21 +32,58 @@
                         <form id="book-ticket-form" method="POST" action="{{ route('tickets.book', ['concert' => $concert->id]) }}">
                             @csrf
                             <div class="mb-3">
-                                <label for="ticket_type_id" class="form-label">Select Ticket Type</label>
+                                <label for="ticket_type_id" class="form-label">Pilih Jenis Tiket</label>
                                 <select class="form-select" id="ticket_type_id" name="ticket_type_id" required>
                                     @foreach ($concert->ticketTypes as $ticketType)
-                                        <option value="{{ $ticketType->id }}" {{ $ticketType->available <= 0 ? 'disabled' : '' }}>
-                                            {{ $ticketType->name }} - Rp {{ number_format($ticketType->price, 0, ',', '.') }} (Available: {{ $ticketType->available }})
+                                        <option value="{{ $ticketType->id }}" data-price="{{ $ticketType->price }}" data-available="{{ $ticketType->available }}" {{ $ticketType->available <= 0 ? 'disabled' : '' }}>
+                                            {{ $ticketType->name }} - Rp {{ number_format($ticketType->price, 0, ',', '.') }}
+                                            @if ($ticketType->price > 0)
+                                                (Tersedia: {{ $ticketType->available }})
+                                            @endif
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-lg w-100" {{ $concert->ticketTypes->every(fn($t) => $t->available <= 0) ? 'disabled' : '' }}>
-                                Book Ticket
+                            <p id="gratis-text" class="text-center fw-bold fs-4 text-success" style="display:none;">Gratis</p>
+                            <button id="book-ticket-button" type="submit" class="btn btn-primary btn-lg w-100" {{ $concert->ticketTypes->every(fn($t) => $t->available <= 0) ? 'disabled' : '' }}>
+                                Pesan Tiket
                             </button>
                         </form>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const ticketSelect = document.getElementById('ticket_type_id');
+                                const gratisText = document.getElementById('gratis-text');
+                                const bookButton = document.getElementById('book-ticket-button');
+
+                                function toggleButtonAndGratis() {
+                                    const selectedOption = ticketSelect.options[ticketSelect.selectedIndex];
+                                    const price = parseInt(selectedOption.getAttribute('data-price'), 10);
+                                    const available = parseInt(selectedOption.getAttribute('data-available'), 10);
+
+                                    if (price === 0) {
+                                        gratisText.style.display = 'block';
+                                        bookButton.style.display = 'none';
+                                    } else {
+                                        gratisText.style.display = 'none';
+                                        bookButton.style.display = 'block';
+                                    }
+
+                                    // Disable book button if availability is 0
+                                    if (available === 0) {
+                                        bookButton.disabled = true;
+                                    } else {
+                                        bookButton.disabled = false;
+                                    }
+                                }
+
+                                ticketSelect.addEventListener('change', toggleButtonAndGratis);
+
+                                // Initialize on page load
+                                toggleButtonAndGratis();
+                            });
+                        </script>
                         @else
-                        <p class="text-center text-secondary">Please <a href="{{ route('login') }}" class="text-primary">login</a> to book tickets.</p>
+                        <p class="text-center text-secondary">Silakan <a href="{{ route('login') }}" class="text-primary">masuk</a> untuk memesan tiket.</p>
                         @endauth
                     </div>
                 </div>
@@ -75,12 +109,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const ticketTypeId = formData.get('ticket_type_id');
 
         Swal.fire({
-            title: 'Confirm Booking',
-            text: 'Are you sure you want to book this ticket?',
+            title: 'Konfirmasi Pemesanan',
+            text: 'Apakah Anda yakin ingin memesan tiket ini?',
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Yes, book it!',
-            cancelButtonText: 'Cancel'
+            confirmButtonText: 'Ya, pesan!',
+            cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
                 fetch("{{ route('tickets.book', ['concert' => $concert->id]) }}", {
@@ -97,28 +131,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(response => response.json().then(data => ({ status: response.status, body: data })))
                 .then(({ status, body }) => {
                     if (status === 201) {
-                        Swal.fire('Booked!', body.message, 'success');
+                        Swal.fire('Berhasil dipesan!', body.message, 'success');
                         // Optionally, update available tickets count or disable sold out options
                         const select = document.getElementById('ticket_type_id');
                         const option = select.querySelector(`option[value="${ticketTypeId}"]`);
                         if (option) {
                             let text = option.textContent;
-                            const match = text.match(/\(Available: (\d+)\)/);
+                            const match = text.match(/\(Tersedia: (\d+)\)/);
                             if (match) {
                                 let available = parseInt(match[1], 10);
                                 available = Math.max(available - 1, 0);
-                                option.textContent = text.replace(/\(Available: \d+\)/, `(Available: ${available})`);
+                                option.textContent = text.replace(/\(Tersedia: \d+\)/, `(Tersedia: ${available})`);
                                 if (available === 0) {
                                     option.disabled = true;
                                 }
                             }
                         }
                     } else {
-                        Swal.fire('Error', body.error || 'An error occurred.', 'error');
+                        Swal.fire('Error', body.error || 'Terjadi kesalahan.', 'error');
                     }
                 })
                 .catch(() => {
-                    Swal.fire('Error', 'An error occurred while booking the ticket.', 'error');
+                    Swal.fire('Error', 'Terjadi kesalahan saat memesan tiket.', 'error');
                 });
             }
         });

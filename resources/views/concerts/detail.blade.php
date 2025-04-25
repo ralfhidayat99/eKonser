@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Concert Details')
+@section('title', 'Detail Konser')
 
 @section('content')
 <div class="card shadow-sm " style="max-width: 100%;">
@@ -32,13 +32,13 @@
                         </form>
                     </div>
                     <dl class="row text-muted mb-4" style="font-size: 1.1rem;">
-                        <dt class="col-sm-4">Artist:</dt>
+                        <dt class="col-sm-4">Artis:</dt>
                         <dd class="col-sm-8">{{ $concert->artist }}</dd>
 
-                        <dt class="col-sm-4">Date:</dt>
+                        <dt class="col-sm-4">Tanggal:</dt>
                         <dd class="col-sm-8">{{ \Carbon\Carbon::parse($concert->date)->format('F d, Y') }}</dd>
 
-                        <dt class="col-sm-4">Location:</dt>
+                        <dt class="col-sm-4">Lokasi:</dt>
                         <dd class="col-sm-8">{{ $concert->location }}</dd>
 
                         <dt class="col-sm-4">Kategori:</dt>
@@ -50,10 +50,10 @@
                         @foreach($concert->ticketTypes as $ticketType)
                         <dt class="col-sm-4">{{ $ticketType->name }} ({{ ucfirst($ticketType->type) }})</dt>
                         <dd class="col-sm-8">
-                            Quota: {{ $ticketType->quota }}<br>
-                            Sold: {{ $ticketType->sold }}<br>
-                            Available: {{ $ticketType->available }}<br>
-                            Price: Rp {{ number_format($ticketType->price, 0, ',', '.') }}
+                            Kuota: {{ $ticketType->quota }}<br>
+                            Terjual: {{ $ticketType->sold }}<br>
+                            Tersedia: {{ $ticketType->available }}<br>
+                            Harga: Rp {{ number_format($ticketType->price, 0, ',', '.') }}
                         </dd>
                         @endforeach
 
@@ -85,12 +85,12 @@
                     deleteButton.addEventListener('click', function(e) {
                         e.preventDefault();
                         Swal.fire({
-                            title: 'Confirm Delete',
-                            text: 'Are you sure you want to delete this concert?',
+                            title: 'Konfirmasi Hapus',
+                            text: 'Apakah Anda yakin ingin menghapus konser ini?',
                             icon: 'warning',
                             showCancelButton: true,
-                            confirmButtonText: 'Yes, delete it!',
-                            cancelButtonText: 'Cancel'
+                            confirmButtonText: 'Ya, hapus!',
+                            cancelButtonText: 'Batal'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 deleteForm.submit();

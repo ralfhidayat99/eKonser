@@ -4,10 +4,10 @@
 
 @section('content')
     <div class="container mt-4">
-        <h1>My Booked Tickets</h1>
+        <h1>Tiket Saya</h1>
 
         @if ($tickets->isEmpty())
-            <p>You have not booked any tickets yet.</p>
+            <p>Kamu belum memesan tiket.</p>
         @else
             <div class="card p-3">
             <table id="ticketsTable" class="table table-bordered table-striped table-hover">

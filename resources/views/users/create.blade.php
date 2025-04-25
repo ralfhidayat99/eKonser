@@ -16,14 +16,14 @@
 
 <div class="card">
     <div class="card-header">
-        <h2>Create User</h2>
+        <h2>Buat User</h2>
 
     </div>
     <form method="POST" action="{{ route('users.store') }}">
         <div class="card-body">
             @csrf
             <div class="mb-3 d-flex align-items-center">
-                <label for="name" class="form-label me-3" style="width: 120px;">Name:</label>
+                <label for="name" class="form-label me-3" style="width: 120px;">Nama:</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required autofocus>
             </div>
             <div class="mb-3 d-flex align-items-center">
@@ -31,25 +31,25 @@
                 <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
             </div>
             <div class="mb-3 d-flex align-items-center">
-                <label for="role" class="form-label me-3" style="width: 120px;">Role:</label>
+                <label for="role" class="form-label me-3" style="width: 120px;">Peran:</label>
                 <select class="form-select" id="role" name="role" required>
-                    <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
+                    <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>Pengguna</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>
             </div>
             <div class="mb-3 d-flex align-items-center">
-                <label for="password" class="form-label me-3" style="width: 120px;">Password:</label>
+                <label for="password" class="form-label me-3" style="width: 120px;">Kata Sandi:</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <div class="mb-3 d-flex align-items-center">
-                <label for="password_confirmation" class="form-label me-3" style="width: 120px;">Confirm Password:</label>
+                <label for="password_confirmation" class="form-label me-3" style="width: 120px;">Konfirmasi Kata Sandi:</label>
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
             </div>
 
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Create User</button>
-            <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+            <a href="{{ route('users.index') }}" class="btn btn-secondary">Batal</a>
         </div>
     </form>
 </div>

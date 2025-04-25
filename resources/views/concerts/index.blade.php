@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Concerts')
+@section('title', 'Konser')
 
 @section('content')
 <div class=" mb-5">
@@ -8,7 +8,7 @@
     <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('concerts.create') }}" class="btn btn-primary mb-3">Add New Concert</a>
+    <a href="{{ route('concerts.create') }}" class="btn btn-primary mb-3">Tambah Konser Baru</a>
 
     @if($concerts->isEmpty())
     <p>No concerts found.</p>

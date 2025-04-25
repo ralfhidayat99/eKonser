@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Users')
+@section('title', 'Pengguna')
 
 @section('content')
 <div class="container ">
@@ -9,7 +9,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Create New User</a>
+    <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Buat User Baru</a>
 
     <div class="card p-4 mt-1">
     <div class="table-responsive">
@@ -17,10 +17,10 @@
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Nama</th>
                 <th>Email</th>
                 <th>Role</th>
-                <th>Actions</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -34,10 +34,10 @@
                     <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-warning" title="Edit">
                         <i class="bi bi-pencil-square"></i>
                     </a>
-                    <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                    <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
                             <i class="bi bi-trash"></i>
                         </button>
                     </form>
@@ -45,7 +45,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5">No users found.</td>
+                <td colspan="5">Tidak ada pengguna ditemukan.</td>
             </tr>
             @endforelse
         </tbody>

@@ -27,7 +27,7 @@ class ConcertSeeder extends Seeder
             $concert = Concert::create([
                 'title' => $faker->sentence(3),
                 'artist' => $faker->name,
-                'date' => $faker->date(),
+'date' => $faker->dateTimeBetween('now', '+1 year')->format('Y-m-d'),
                 'location' => $faker->city,
                 'banner' => $unsplashImages[$i],
                 'quota' => $faker->numberBetween(50, 500),

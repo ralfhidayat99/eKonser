@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Ticket List')
+@section('title', 'Daftar Tiket')
 
 @section('content')
 
@@ -8,16 +8,16 @@
     <form method="GET" action="{{ route('tickets.index') }}">
         <div class="mb-3 d-flex align-items-end gap-2">
             <div class="flex-grow-1">
-                <label for="concertDropdown" class="form-label">Select Concert</label>
+                <label for="concertDropdown" class="form-label">Pilih Konser</label>
                 <select id="concertDropdown" class="form-select" name="concert_id">
-                    <option value="">-- Select a Concert --</option>
+                    <option value="">-- Pilih Konser --</option>
                     @foreach ($concerts as $concert)
                     <option value="{{ $concert->id }}" {{ (isset($concertId) && $concertId == $concert->id) ? 'selected' : '' }}>{{ $concert->title }}</option>
                     @endforeach
                 </select>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary ">Search</button>
+                <button type="submit" class="btn btn-primary ">Cari</button>
             </div>
         </div>
     </form>
@@ -29,7 +29,7 @@
                     <i class="bi bi-ticket-perforated-fill"></i>
                 </span>
                 <div class="info-box-content">
-                    <span class="info-box-text fw-semibold">Sold Tickets</span>
+                    <span class="info-box-text fw-semibold">Tiket Terjual</span>
                     <span class="info-box-number fs-4" id="soldTicketsCount">
                         {{ $soldTicketsCount }}
                     </span>
@@ -42,7 +42,7 @@
                     <i class="bi bi-cart-check-fill"></i>
                 </span>
                 <div class="info-box-content">
-                    <span class="info-box-text fw-semibold">Unused Tickets</span>
+                    <span class="info-box-text fw-semibold">Tiket Belum Digunakan</span>
                     <span class="info-box-number fs-4" id="unusedTicketsCount">{{ $unusedTicketsCount }}</span>
                 </div>
             </div>
@@ -60,11 +60,11 @@
             <table class="table table-bordered table-striped table-hover ticketsTable" data-ticket-type="{{ $ticketTypeName }}">
                 <thead class="table-dark">
                     <tr>
-                        <th>User Name</th>
-                        <th>Ticket Code</th>
-                        <th>Concert Title</th>
-                        <th>Used</th>
-                        <th>Redeemed At</th>
+                        <th>Nama </th>
+                        <th>Kode Tiket</th>
+                        <th>Judul </th>
+                        <th>Digunakan</th>
+                        <th>Tanggal Penukaran</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,11 +76,11 @@
                         <td>
                             @if ($ticket->used)
                             <span class="badge bg-danger d-flex align-items-center">
-                                <i class="bi bi-x-circle-fill me-1"></i> Yes
+                                <i class="bi bi-x-circle-fill me-1"></i> Ya
                             </span>
                             @else
                             <span class="badge bg-success d-flex align-items-center">
-                                <i class="bi bi-check-circle-fill me-1"></i> No
+                                <i class="bi bi-check-circle-fill me-1"></i> Tidak
                             </span>
                             @endif
                         </td>
@@ -94,7 +94,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center fst-italic">No tickets found.</td>
+                        <td colspan="5" class="text-center fst-italic">Tidak ada tiket ditemukan.</td>
                     </tr>
                     @endforelse
                 </tbody>
