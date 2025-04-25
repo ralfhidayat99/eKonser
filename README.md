@@ -3,6 +3,9 @@
 ## Deskripsi
 eKonser adalah aplikasi web untuk mengelola konser dan tiket. Aplikasi ini memungkinkan pengguna untuk melihat daftar konser, membeli tiket, dan mengelola pemesanan mereka.
 
+## User Admin
+email : admin@example.com
+password : password
 ## Fitur
 - Autentikasi dan registrasi pengguna.
 - Daftar dan detail konser.
